@@ -12,6 +12,7 @@
     "serverless-offline": "^4.9.2"
   },
   "dependencies": {
+    "js-yaml": "^3.13.0",
     "node-fetch": "^2.3.0"
   }
 }
