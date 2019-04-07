@@ -60,7 +60,7 @@ module.exports.getProdUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/Stack+SE-${config.version}.dmg`
+                    url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/Stack-${config.version}.dmg`
                 }),
             };
             callback(null, response);
