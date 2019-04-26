@@ -16,7 +16,7 @@ plugins:
 - serverless-offline
 # The `functions` block defines what code to deploy
 functions:
-  getSEUrl:
+  getSEUrlPlatform:
     handler: handler.getSEUrl
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
@@ -24,11 +24,27 @@ functions:
           path: se/{platform}
           method: get
           cors: true
-  getProdUrl:
+  getProdUrlPlatform:
     handler: handler.getProdUrl
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
     - http:
         path: prod/{platform}
+        method: get
+        cors: true
+  getSEUrl:
+    handler: handler.getSEUrl
+    # The `events` block defines how to trigger the handler.helloWorld code
+    events:
+      - http:
+          path: se
+          method: get
+          cors: true
+  getProdUrl:
+    handler: handler.getProdUrl
+    # The `events` block defines how to trigger the handler.helloWorld code
+    events:
+    - http:
+        path: prod
         method: get
         cors: true

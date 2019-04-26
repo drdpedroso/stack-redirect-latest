@@ -20,6 +20,7 @@ const download = function(url, dest, cb) {
 };
 
 module.exports.getSEUrl = (event, context, callback) => {
+    const platform = event.pathParameters ? event.pathParameters.platform : 'mac'; 
     download(urlSe, '/tmp/versions-se.yml', () => {
         const yaml = require('js-yaml');
         try {
@@ -30,13 +31,13 @@ module.exports.getSEUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    // url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/Stack+SE-${config.version}.dmg
-                    url: platformFuntions.getSELinkByPlatform(event.pathParameters.platform, config.version)
+                    url: platformFuntions.getSELinkByPlatform(platform, config.version)
                 }),
             };
             callback(null, response);
 
         } catch (e) {
+            console.log(e)
             callback(null, {
                 statusCode: 500,
                 headers: {
@@ -51,6 +52,7 @@ module.exports.getSEUrl = (event, context, callback) => {
 };
 
 module.exports.getProdUrl = (event, context, callback) => {
+    const platform = event.pathParameters ? event.pathParameters.platform : 'mac'
     download(urlProd, '/tmp/versions-prod.yml', () => {
         const yaml = require('js-yaml');
         try {
@@ -61,8 +63,7 @@ module.exports.getProdUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    // url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/Stack-${config.version}.dmg`
-                    url: platformFuntions.getProdLinkByPlatform(event.pathParameters.platform, config.version)
+                    url: platformFuntions.getProdLinkByPlatform(platform, config.version)
                 }),
             };
             callback(null, response);
