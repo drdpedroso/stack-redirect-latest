@@ -21,7 +21,7 @@ functions:
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
-          path: se
+          path: se/{platform}
           method: get
           cors: true
   getProdUrl:

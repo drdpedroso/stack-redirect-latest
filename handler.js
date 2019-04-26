@@ -1,6 +1,6 @@
 'use strict';
-
-const fetch = require('node-fetch');
+// import {getSELinkByPlatform, getProdLinkByPlatform} from '../utils'
+const platformFuntions = require('./utils')
 const http = require('http');
 const fs = require('fs');
 const urlSe = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/latest-mac.yml'
@@ -30,7 +30,8 @@ module.exports.getSEUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/Stack+SE-${config.version}.dmg`
+                    // url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/Stack+SE-${config.version}.dmg
+                    url: platformFuntions.getSELinkByPlatform(event.pathParameters.platform, config.version)
                 }),
             };
             callback(null, response);
@@ -42,7 +43,7 @@ module.exports.getSEUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    message: 'Something went wrogn :('
+                    message: 'Something went wrong :('
                 }),
             });
         }
@@ -60,7 +61,8 @@ module.exports.getProdUrl = (event, context, callback) => {
                     'Access-Control-Allow-Origin': '*', // Required for CORS support to work
                 },
                 body: JSON.stringify({
-                    url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/Stack-${config.version}.dmg`
+                    // url: `https://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/Stack-${config.version}.dmg`
+                    url: platformFuntions.getProdLinkByPlatform(event.pathParameters.platform, config.version)
                 }),
             };
             callback(null, response);
