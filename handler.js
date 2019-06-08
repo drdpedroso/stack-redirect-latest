@@ -3,8 +3,10 @@
 const platformFuntions = require('./utils')
 const http = require('http');
 const fs = require('fs');
-const urlSe = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/latest-mac.yml'
-const urlProd = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/latest-mac.yml'
+const urlSeMac = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/latest-mac.yml'
+const urlSeWindows = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/se/latest.yml'
+const urlProdMac = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/latest-mac.yml'
+const urlProdWindows = 'http://s3.eu-central-1.amazonaws.com/stack-v1/builds/prod/latest-mac.yml'
 
 const download = function(url, dest, cb) {
     const file = fs.createWriteStream(dest);
@@ -20,8 +22,9 @@ const download = function(url, dest, cb) {
 };
 
 module.exports.getSEUrl = (event, context, callback) => {
-    const platform = event.pathParameters ? event.pathParameters.platform : 'mac'; 
-    download(urlSe, '/tmp/versions-se.yml', () => {
+    const platform = event.pathParameters ? event.pathParameters.platform : 'mac';
+    const url = platform === 'mac' ? urlSeMac : urlSeWindows;
+    download(url, '/tmp/versions-se.yml', () => {
         const yaml = require('js-yaml');
         try {
             const config = yaml.safeLoad(fs.readFileSync('/tmp/versions-se.yml', 'utf8'));
@@ -53,7 +56,8 @@ module.exports.getSEUrl = (event, context, callback) => {
 
 module.exports.getProdUrl = (event, context, callback) => {
     const platform = event.pathParameters ? event.pathParameters.platform : 'mac'
-    download(urlProd, '/tmp/versions-prod.yml', () => {
+    const url = platform === 'mac' ? urlProdMac : urlProdWindows;
+    download(url, '/tmp/versions-prod.yml', () => {
         const yaml = require('js-yaml');
         try {
             const config = yaml.safeLoad(fs.readFileSync('/tmp/versions-prod.yml', 'utf8'));
